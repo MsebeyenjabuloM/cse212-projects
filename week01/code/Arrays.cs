@@ -9,11 +9,21 @@ public static class Arrays
     public static double[] MultiplesOf(double number, int length)
     {
         // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // My Plan:
+        // 1. Create a new array of doubles with the size of 'length'.
+        // 2. Loop from 0 to length - 1.
+        // 3. In each step of the loop, multiply the index + 1 by the number.
+        // 4. Store the result in the array at that index.
+        // 5. After the loop, return the array.
 
-        return []; // replace this return statement with your own
+        double[] multiples = new double[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            multiples[i] = number * (i + 1);
+        }
+
+        return multiples;
     }
 
     /// <summary>
@@ -26,8 +36,16 @@ public static class Arrays
     public static void RotateListRight(List<int> data, int amount)
     {
         // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // My Plan:
+        // 1. Figure out the part of the list we want to move to the front.
+        //    This will be the last 'amount' elements from the list.
+        // 2. Use GetRange to get the last 'amount' elements.
+        // 3. Use RemoveRange to take those elements out of the end of the list.
+        // 4. Use InsertRange to add them back to the front of the list.
+        // 5. After doing this, the list will be rotated to the right.
+
+        List<int> endPart = data.GetRange(data.Count - amount, amount);
+        data.RemoveRange(data.Count - amount, amount);
+        data.InsertRange(0, endPart);
     }
 }
