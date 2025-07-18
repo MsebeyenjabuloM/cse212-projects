@@ -9,35 +9,38 @@
     /// </summary>
     /// <param name="value">The value</param>
     /// <param name="priority">The priority</param>
-    public void Enqueue(string value, int priority)
+     public void Enqueue(string value, int priority)
     {
-        var newNode = new PriorityItem(value, priority);
-        _queue.Add(newNode);
+        _queue.Add(new PriorityItem(value, priority));
     }
 
-public string Dequeue()
-{
-    if (_queue.Count == 0)
+    public string Dequeue()
     {
-        throw new InvalidOperationException("The queue is empty.");
-    }
-
-    int highPriorityIndex = 0;
-    for (int i = 1; i < _queue.Count; i++)
-    {
-        if (_queue[i].Priority > _queue[highPriorityIndex].Priority)
+        if (_queue.Count == 0)
         {
-            highPriorityIndex = i;
+            throw new InvalidOperationException("The queue is empty.");
         }
+
+        int highestPriority = _queue.Max(item => item.Priority);
+
+        for (int i = 0; i < _queue.Count; i++)
+        {
+            if (_queue[i].Priority == highestPriority)
+            {
+                string value = _queue[i].Value;
+                _queue.RemoveAt(i);
+                return value;
+            }
+        }
+
+        throw new InvalidOperationException("Unexpected error in Dequeue.");
     }
 
-    string value = _queue[highPriorityIndex].Value;
-    _queue.RemoveAt(highPriorityIndex); // This properly removes it from the list
-
-    return value;
+    public override string ToString()
+    {
+        return $"[{string.Join(", ", _queue)}]";
+    }
 }
-}
-
 
 internal class PriorityItem
 {
