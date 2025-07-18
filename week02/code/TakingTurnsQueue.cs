@@ -20,8 +20,7 @@ public class TakingTurnsQueue
     /// <param name="turns">Number of turns remaining</param>
     public void AddPerson(string name, int turns)
     {
-        var person = new Person(name, turns);
-        _people.Enqueue(person);
+        _people.Enqueue(new Person(name, turns));
     }
 
     /// <summary>
@@ -31,33 +30,33 @@ public class TakingTurnsQueue
     /// person has an infinite number of turns.  An error exception is thrown 
     /// if the queue is empty.
     /// </summary>
-    public Person GetNextPerson()
-{
-    if (_people.IsEmpty())
+    public void AddPerson(Person person)
     {
-        throw new InvalidOperationException("No one in the queue.");
-    }
-
-    Person person = _people.Dequeue();
-
-    if (person.Turns > 0)
-    {
-        person.Turns--;
-
-        if (person.Turns > 0)
-        {
-            _people.Enqueue(person); // Still has turns left
-        }
-        // else: Do not re-enqueue if Turns == 0
-    }
-    else
-    {
-        // Infinite turns (0 or negative)
         _people.Enqueue(person);
     }
 
-    return person;
-}
+    public Person GetNextPerson()
+    {
+        if (_people.IsEmpty())
+        {
+            throw new InvalidOperationException("No one in the queue.");
+        }
 
+        Person person = _people.Dequeue();
 
+        if (person.Turns <= 0)
+        {
+            _people.Enqueue(person);
+        }
+        else
+        {
+            person.Turns -= 1;
+            if (person.Turns > 0)
+            {
+                _people.Enqueue(person);
+            }
+        }
+
+        return person;
+    }
 }
